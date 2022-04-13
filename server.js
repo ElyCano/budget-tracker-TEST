@@ -14,7 +14,7 @@ app.use(compression());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(express.static("public"));
+app.use(express.static("public/"));
 
 const mongoUri =
   process.env.MONGODB_URI || "mongodb://127.0.0.1/budget-tracker-ec";
