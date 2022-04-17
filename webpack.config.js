@@ -1,12 +1,44 @@
+const WebpackPwaManifest = require("webpack-pwa-manifest");
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-module.exports = {
-  entry: "./public/assets/js/index.js",
+const config = {
   mode: "development",
-  output: {
-    path: path.resolve(__dirname, "public"),
-    filename: "service.worker.js",
+  entry: {
+    app: "./public/assets/js/index.js",
+    db: "./public/assets/js/idb.js",
   },
-  plugins: [new HtmlWebpackPlugin()],
+  output: {
+    path: __dirname + "/public/dist",
+    filename: "[name].bundle.js",
+  },
+  plugins: [
+    new WebpackPwaManifest({
+      fingerprints: false,
+      inject: false,
+      name: "Budget Tracker app",
+      short_name: "Budget",
+      description:
+        "An application that allows you to track your withdrawals and deposits.",
+      background_color: "#ffffff",
+      theme_color: "#317EFB",
+      start_url: "/",
+      icons: [
+        {
+          src: path.resolve("public/assets/icons/icon-512x512.png"),
+          sizes: [72, 96, 128, 144, 152, 192, 384, 512],
+          destination: path.join("assets", "icons"),
+        },
+      ],
+    }),
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+      },
+    ],
+  },
 };
+
+module.exports = config;
